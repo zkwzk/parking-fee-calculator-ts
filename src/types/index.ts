@@ -1,6 +1,6 @@
 import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
-import { FixedFeePerEntry } from '../services/fee/FixedFeePerEntry';
-import { parseTimeString } from '../utils';
+import { BaseFee } from '../services/fee/BaseFee';
+import { LocalTime } from '@js-joda/core';
 
 export interface Request extends ExpressRequest {
   // Add any custom request properties here
@@ -10,46 +10,37 @@ export interface Response extends ExpressResponse {
   // Add any custom response properties here
 }
 
-
-export type FeeRule<T extends FixedFeePerEntry
-//  | FixedFirstXMinutes | FixedFeePerXMinutes
- > = {
-  startTime: string;
-  endTime: string;
-  fee: T;
-}
-
-
 export type FitResult = {
   isFit: boolean;
-  startTime?: Date;
-  endTime?: Date;
+  startTime?: LocalTime;
+  endTime?: LocalTime;
 }
 
 export interface Fee { 
-  startTime: Date; 
-  endTime: Date;
+  startTime: LocalTime; 
+  endTime: LocalTime;
   isFit: (startTime: string, endTime: string) => FitResult;
   calculateCost: (fit: FitResult) => number;
 }
 
-export type FixedFirstXMinutes = {
-  x: number;
-  feeFirstXMintues: number;
-  y: number;
-  subsequenceChargePerYMinutes: number;
-}
-
-export type FixedFeePerXMinutes = {
-  feePerXMinutes: number; 
-  x: number;
-}
-
 export type CarFee = {
-  weekdayFeeRules: Fee[];
-  weekendPHFeeRules: Fee[];
+  weekdayFeeRules: BaseFee[];
+  weekendPHFeeRules: BaseFee[];
 }
 
 export type MotocycleFee = {
-  feeRules: Fee[];
+  feeRules: BaseFee[];
+}
+
+export type CarPark = {
+  name: string;
+  carFee: CarFee;
+  motocycleFee: MotocycleFee;
+  gracePeriodInMinutes: number;
+}
+
+export type CalculateDaysResult = {
+  dayStartTime: LocalTime, 
+  dayEndTime: LocalTime, 
+  isWeekendOrPH: boolean
 }

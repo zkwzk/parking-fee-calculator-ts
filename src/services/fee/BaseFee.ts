@@ -1,9 +1,10 @@
+import { LocalTime } from "@js-joda/core";
 import { Fee, FitResult } from "../../types";
 import { parseTimeString } from "../../utils";
 
 export class BaseFee implements Fee {
-    startTime: Date;
-    endTime: Date;
+    startTime: LocalTime;
+    endTime: LocalTime;
     constructor(startTime: string, endTime: string) {
       this.startTime = parseTimeString(startTime);
       this.endTime = parseTimeString(endTime);
@@ -12,19 +13,19 @@ export class BaseFee implements Fee {
     isFit = (startTime: string, endTime: string) : FitResult => {
       const parsedStartTime = parseTimeString(startTime);
       const parsedEndTime = parseTimeString(endTime);
-      if((parsedStartTime < this.startTime && parsedEndTime < this.startTime) || (parsedEndTime > this.endTime && parsedStartTime > this.endTime)) {
+      if((parsedStartTime.isBefore(this.startTime) && parsedEndTime.isBefore(this.startTime)) || (parsedEndTime.isAfter(this.endTime) && parsedStartTime.isAfter(this.endTime))) {
           return { isFit: false }
       }
   
       return {
           isFit: true,
-          startTime: parsedStartTime >= this.startTime? parsedStartTime : this.startTime,
-          endTime: parsedEndTime <= this.endTime? parsedEndTime: this.endTime
+          startTime: parsedStartTime.isAfter(this.startTime)? parsedStartTime : this.startTime,
+          endTime: parsedEndTime.isBefore(this.endTime)? parsedEndTime: this.endTime
         }
     }
   
     calculateCost = (fit: FitResult): number => {
-      return 0;
+      throw new Error("Method not implemented.");
     }
   }
   
