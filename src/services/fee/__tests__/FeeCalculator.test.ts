@@ -6,14 +6,14 @@ describe("FeeCalculator", () => {
   const feeCalculator = new FeeCalculator();
   describe("checkGracePeriod", () => {
     it("should return true if the time difference is less than the grace period", () => {
-      const startTime = "10:00";
-      const endTime = "10:14";
+      const startTime = "2021-01-01T10:00";
+      const endTime = "2021-01-01T10:14";
       expect(feeCalculator.checkGracePeriod(startTime, endTime, 15)).toBe(true);
     });
 
     it("should return false if the time difference is more than the grace period", () => {
-      const startTime = "10:00";
-      const endTime = "10:16";
+      const startTime = "2021-01-01T10:00";
+      const endTime = "2021-01-01T10:16";
       expect(feeCalculator.checkGracePeriod(startTime, endTime, 15)).toBe(
         false
       );
