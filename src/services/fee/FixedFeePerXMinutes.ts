@@ -4,7 +4,7 @@ import { BaseFee } from "./BaseFee";
 export class FixedFeePerXMinutes extends BaseFee {
     feePerXMinutes: number;
     x: number;
-    constructor(startTime: string, endTime: string, feePerXMinutes: number, x: number) {
+    constructor(startTime: string, endTime: string, x: number, feePerXMinutes: number) {
         super(startTime, endTime);
         this.feePerXMinutes = feePerXMinutes;
         this.x = x;
@@ -14,6 +14,6 @@ export class FixedFeePerXMinutes extends BaseFee {
         if(!fit.isFit) return 0;
         const timeDiff = fit.startTime!.until(fit.endTime!, ChronoUnit.MINUTES);
         const chargeNumberOfXMintues = Math.ceil(timeDiff / this.x);
-        return chargeNumberOfXMintues * this.feePerXMinutes;
+        return parseFloat((chargeNumberOfXMintues * this.feePerXMinutes).toFixed(2));
     }
 }

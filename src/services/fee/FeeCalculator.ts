@@ -105,10 +105,11 @@ export class FeeCalculator {
       if (day.isWeekendOrPH) {
         const weekendPHFeeRules = carpark.carFee.weekendPHFeeRules;
         weekendPHFeeRules.forEach((rule) => {
-          console.log(rule, totalFee);
           const isFitResult = rule.isFit(day.dayStartTime, day.dayEndTime);
           if (isFitResult.isFit) {
-            totalFee += rule.calculateCost(isFitResult);
+            const fee = rule.calculateCost(isFitResult);
+            console.log('rule', rule, 'fee', fee);
+            totalFee += fee;
           }
         });
       } else {
@@ -121,6 +122,6 @@ export class FeeCalculator {
         });
       }
     });
-    return totalFee;
+    return  parseFloat(totalFee.toFixed(2));
   };
 }

@@ -146,11 +146,12 @@ describe("FeeCalculator", () => {
 
         12-0259: 3*4*0.55 = 6.60
         3-459: 3.25
-        5-11: 6*4*0.55 + 0.55 = 13.95
+        5-10:59: 6*4*0.55 = 13.2
+        11:00 0.55
 
-        total: 1.95 + 15.40 + 3.25 + 6.60 + 3.25 + 13.95 = 42.40
+        total: 1.95 + 15.40 + 3.25 + 6.60 + 3.25 + 13.2 + 0.55 = 44.2
         */
-      const expectedFee = 42.4;
+      const expectedFee = 44.2;
       expect(
         feeCalculator.calculateParkingFee(
           startTime,

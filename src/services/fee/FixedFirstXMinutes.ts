@@ -39,9 +39,9 @@ export class FixedFirstXMinutes extends BaseFee {
 
     const chargeNumberOfYMintues = Math.ceil(timeDiff / this.y);
 
-    return (
+    return  parseFloat((
       this.feeFirstXMintues +
       chargeNumberOfYMintues * this.subsequenceChargePerYMinutes
-    );
+    ).toFixed(2));
   };
 }
