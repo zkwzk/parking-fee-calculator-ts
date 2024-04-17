@@ -1,6 +1,7 @@
 import { LocalDate, LocalDateTime, LocalTime } from "@js-joda/core";
 import { FeeCalculator } from "../FeeCalculator";
 import { plazaSingapuraCarPark } from "../../../config";
+import { VEHICLE_TYPE } from "../../../types";
 
 describe("FeeCalculator", () => {
   const feeCalculator = new FeeCalculator();
@@ -140,18 +141,17 @@ describe("FeeCalculator", () => {
       const endTime = "2021-01-02T11:00";
 
       /*
-        10-1059: 1.95
-        11-17:59: 7*4*0.55 = 15.40
+        10-1100: 1.95
+        1100-17:59: 7*4*0.55 = 15.40
         18-23:59: 3.25
 
         12-0259: 3*4*0.55 = 6.60
-        3-459: 3.25
-        5-10:59: 6*4*0.55 = 13.2
-        11:00 0.55
+        3-500: 3.25
+        501-1100: 6*4*0.55 = 13.2
 
-        total: 1.95 + 15.40 + 3.25 + 6.60 + 3.25 + 13.2 + 0.55 = 44.2
+        total: 1.95 + 15.40 + 3.25 + 6.60 + 3.25 + 13.2 = 43.65
         */
-      const expectedFee = 44.2;
+      const expectedFee = 43.65;
       expect(
         feeCalculator.calculateParkingFee(
           startTime,
@@ -161,10 +161,53 @@ describe("FeeCalculator", () => {
       ).toBe(expectedFee);
     });
 
+    /*
+    10-1100: 1.95
+        1100-17:59: 7*4*0.55 = 15.40
+        18-23:59: 3.25
+
+        12-0259: 3*4*0.55 = 6.60
+        3-500: 3.25
+        501-1759: 13*4*0.55 = 28.6
+        18-23:59: 3.25
+
+        12-0259: 3*4*0.55 = 6.60
+        3-500: 3.25
+        501-1200: 7*4*0.55 = 15.40
+
+        total: 1.95 + 15.40 + 3.25 + 6.60 + 3.25 + 28.6 + 3.25 + 6.60 + 3.25 + 15.40 = 87.55
+    */
     it("should calculate the parking fee correctly for parking across 1 weekday and 2 weekend-days", () => {
       const startTime = "2021-01-01T10:00";
       const endTime = "2021-01-03T12:00";
-      const expectedFee = 12.2;
+      const expectedFee = 87.55;
+      expect(
+        feeCalculator.calculateParkingFee(
+          startTime,
+          endTime,
+          plazaSingapuraCarPark
+        )
+      ).toBe(expectedFee);
+    });
+
+    it("should calculate the parking fee correctly for a 2-hour duration for vehicle type = MOTORCYCLE", () => {
+      const startTime = "2021-01-01T10:00";
+      const endTime = "2021-01-01T12:00";
+      const expectedFee = 1.3;
+      expect(
+        feeCalculator.calculateParkingFee(
+          startTime,
+          endTime,
+          plazaSingapuraCarPark,
+          VEHICLE_TYPE.MOTORCYCLE
+        )
+      ).toBe(expectedFee);
+    });
+
+    it("should calculate the parking fee correctly for a car parking from 1800-2359", () => {
+      const startTime = "2021-01-01T18:00";
+      const endTime = "2021-01-01T23:59";
+      const expectedFee = 3.25;
       expect(
         feeCalculator.calculateParkingFee(
           startTime,
@@ -174,4 +217,21 @@ describe("FeeCalculator", () => {
       ).toBe(expectedFee);
     });
   });
+
+  it("should calculate the parking fee correctly for a car parking from 1800-0000", () => {
+    const startTime = "2021-01-01T18:00";
+    const endTime = "2021-01-02T00:00";
+    const expectedFee = 3.8;
+    expect(
+      feeCalculator.calculateParkingFee(
+        startTime,
+        endTime,
+        plazaSingapuraCarPark
+      )
+    ).toBe(expectedFee);
+  });
+
+  /*
+  show instance where copilot generates the wrong implementation
+  */
 });

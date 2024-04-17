@@ -5,7 +5,7 @@ import {
   LocalDateTime,
   LocalTime,
 } from "@js-joda/core";
-import { CalculateDaysResult, CarPark } from "../../types";
+import { CalculateDaysResult, CarPark, VEHICLE_TYPE } from "../../types";
 import { parseTimeString } from "../../utils";
 
 export class FeeCalculator {
@@ -92,7 +92,8 @@ export class FeeCalculator {
   calculateParkingFee = (
     startTime: string,
     endTime: string,
-    carpark: CarPark
+    carpark: CarPark,
+    vehicleType: VEHICLE_TYPE = VEHICLE_TYPE.CAR
   ): number => {
     let totalFee = 0;
     if (
@@ -101,19 +102,26 @@ export class FeeCalculator {
       return 0;
     }
     const days = this.calculateDays(startTime, endTime);
+    console.log("days", days);
     days.forEach((day) => {
       if (day.isWeekendOrPH) {
-        const weekendPHFeeRules = carpark.carFee.weekendPHFeeRules;
+        const weekendPHFeeRules =
+          vehicleType === VEHICLE_TYPE.CAR
+            ? carpark.carFee.weekendPHFeeRules
+            : carpark.motocycleFee.feeRules;
         weekendPHFeeRules.forEach((rule) => {
           const isFitResult = rule.isFit(day.dayStartTime, day.dayEndTime);
           if (isFitResult.isFit) {
             const fee = rule.calculateCost(isFitResult);
-            console.log('rule', rule, 'fee', fee);
+            console.log("rule", rule, "fee", fee);
             totalFee += fee;
           }
         });
       } else {
-        const weekdayFeeRules = carpark.carFee.weekdayFeeRules;
+        const weekdayFeeRules =
+          vehicleType === VEHICLE_TYPE.CAR
+            ? carpark.carFee.weekdayFeeRules
+            : carpark.motocycleFee.feeRules;
         weekdayFeeRules.forEach((rule) => {
           const isFitResult = rule.isFit(day.dayStartTime, day.dayEndTime);
           if (isFitResult.isFit) {
@@ -122,6 +130,6 @@ export class FeeCalculator {
         });
       }
     });
-    return  parseFloat(totalFee.toFixed(2));
+    return parseFloat(totalFee.toFixed(2));
   };
 }

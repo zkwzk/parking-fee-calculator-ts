@@ -47,3 +47,8 @@ export type CalculateDaysResult = {
   dayEndTime: LocalTime;
   isWeekendOrPH: boolean;
 };
+
+export enum VEHICLE_TYPE {
+  CAR,
+  MOTORCYCLE,
+}
