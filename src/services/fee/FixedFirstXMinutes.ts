@@ -32,6 +32,8 @@ export class FixedFirstXMinutes extends BaseFee {
       return this.feeFirstXMintues;
     }
 
+    if (this.startTime.equals(this.endTime)) { return this.feeFirstXMintues; }
+    
     const timeDiff = startTimeAfterXMins.until(
       fit.endTime!,
       ChronoUnit.MINUTES

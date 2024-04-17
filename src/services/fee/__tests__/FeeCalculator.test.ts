@@ -231,6 +231,18 @@ describe("FeeCalculator", () => {
     ).toBe(expectedFee);
   });
 
+  it('should calculate the parking fee correctly for a car parking in weekday from 0000-1800', () => {
+    // 0000-0100: 1.95
+    // 0101-1759: 17*4*0.55 = 37.4
+    // 1800-1800: 3.25
+    // total: 1.95 + 37.4 + 3.25 = 42.6
+
+    const startTime = "2021-01-01T00:00";
+    const endTime = "2021-01-01T18:00";
+    const expectedFee = 42.6;
+    expect(feeCalculator.calculateParkingFee(startTime, endTime, plazaSingapuraCarPark)).toBe(expectedFee);
+  });
+
   /*
   show instance where copilot generates the wrong implementation
   */

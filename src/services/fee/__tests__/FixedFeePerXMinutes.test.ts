@@ -27,5 +27,25 @@ describe('FixedFeePerXMinutes', () => {
 
             expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toBe(1);
         });
+
+        it('should return 0 if not fit', () => {
+            const mockFitResult = {
+                startTime: LocalTime.parse("10:00"),
+                endTime: LocalTime.parse("11:00"),
+                isFit: false
+            }
+
+            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toBe(0);
+        });
+
+        it('should return 1 unit of fee if start time is the same with end time', () => {
+            const mockFitResult = {
+                startTime: LocalTime.parse("10:00"),
+                endTime: LocalTime.parse("10:00"),
+                isFit: true
+            }
+
+            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toBe(0.5);
+        });
     });
 });
