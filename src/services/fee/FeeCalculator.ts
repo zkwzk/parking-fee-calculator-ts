@@ -5,7 +5,7 @@ import {
   LocalDateTime,
   LocalTime,
 } from "@js-joda/core";
-import { CalculateDaysResult, CarPark, VEHICLE_TYPE } from "../../types";
+import { CalculateDaysResult, CarPark, PreviousDayContext, VEHICLE_TYPE } from "../../types";
 import { parseTimeString } from "../../utils";
 
 export class FeeCalculator {
@@ -103,6 +103,7 @@ export class FeeCalculator {
     }
     const days = this.calculateDays(startTime, endTime);
     console.log("days", days);
+    let previousDayContext: PreviousDayContext | undefined = undefined;
     days.forEach((day) => {
       if (day.isWeekendOrPH) {
         const weekendPHFeeRules =
@@ -112,9 +113,10 @@ export class FeeCalculator {
         weekendPHFeeRules.forEach((rule) => {
           const isFitResult = rule.isFit(day.dayStartTime, day.dayEndTime);
           if (isFitResult.isFit) {
-            const fee = rule.calculateCost(isFitResult);
-            console.log("rule", rule, "fee", fee);
-            totalFee += fee;
+            const calculationResult = rule.calculateCost(isFitResult, previousDayContext);
+            previousDayContext = calculationResult.previousDayContext;
+            console.log("rule", rule, "fee", calculationResult.cost);
+            totalFee += calculationResult.cost;
           }
         });
       } else {
@@ -125,7 +127,10 @@ export class FeeCalculator {
         weekdayFeeRules.forEach((rule) => {
           const isFitResult = rule.isFit(day.dayStartTime, day.dayEndTime);
           if (isFitResult.isFit) {
-            totalFee += rule.calculateCost(isFitResult);
+            const calculationResult = rule.calculateCost(isFitResult, previousDayContext);
+            previousDayContext = calculationResult.previousDayContext;
+            console.log("rule", rule, "fee", calculationResult.cost);
+            totalFee += calculationResult.cost
           }
         });
       }

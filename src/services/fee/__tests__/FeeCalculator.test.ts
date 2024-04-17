@@ -1,6 +1,6 @@
 import { LocalDate, LocalDateTime, LocalTime } from "@js-joda/core";
 import { FeeCalculator } from "../FeeCalculator";
-import { plazaSingapuraCarPark } from "../../../config";
+import { HeerenCarPark, plazaSingapuraCarPark } from "../../../config";
 import { VEHICLE_TYPE } from "../../../types";
 
 describe("FeeCalculator", () => {
@@ -241,6 +241,13 @@ describe("FeeCalculator", () => {
     const endTime = "2021-01-01T18:00";
     const expectedFee = 42.6;
     expect(feeCalculator.calculateParkingFee(startTime, endTime, plazaSingapuraCarPark)).toBe(expectedFee);
+  });
+
+  it('should return correct fixed entry fee for heeren carpark', () => {
+    const startTime = "2020-12-31T18:00";
+    const endTime = "2021-01-01T02:59";
+    const expectedFee = 4.5;
+    expect(feeCalculator.calculateParkingFee(startTime, endTime, HeerenCarPark)).toBe(expectedFee);
   });
 
   /*

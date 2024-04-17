@@ -19,11 +19,22 @@ export type FitResult = {
   endTime?: LocalTime;
 };
 
+export type PreviousDayContext = {
+  nextDayStartTime?: LocalTime;
+  isFirstXCharged: boolean;
+};
+
 export interface Fee {
   startTime: LocalTime;
   endTime: LocalTime;
+  isAcrossDay: boolean;
   isFit: (startTime: LocalTime, endTime: LocalTime) => FitResult;
-  calculateCost: (fit: FitResult) => number;
+  calculateCost: (fit: FitResult, previousDayContext?: PreviousDayContext) => CalculationResult;
+}
+
+export type CalculationResult = {
+  previousDayContext?: PreviousDayContext;
+  cost: number;
 }
 
 export type CarFee = {

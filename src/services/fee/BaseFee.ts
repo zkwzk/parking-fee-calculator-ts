@@ -1,13 +1,15 @@
 import { LocalTime } from "@js-joda/core";
-import { Fee, FitResult } from "../../types";
+import { CalculationResult, Fee, FitResult, PreviousDayContext } from "../../types";
 import { parseTimeString } from "../../utils";
 
 export class BaseFee implements Fee {
   startTime: LocalTime;
   endTime: LocalTime;
-  constructor(startTime: string, endTime: string) {
+  isAcrossDay: boolean;
+  constructor(startTime: string, endTime: string, isAcrossDay = false) {
     this.startTime = parseTimeString(startTime);
     this.endTime = parseTimeString(endTime);
+    this.isAcrossDay = isAcrossDay;
   }
 
   isFit = (startTime: LocalTime, endTime: LocalTime): FitResult => {
@@ -26,7 +28,7 @@ export class BaseFee implements Fee {
     };
   };
 
-  calculateCost = (fit: FitResult): number => {
+  calculateCost = (fit: FitResult, previousDayContext?: PreviousDayContext): CalculationResult => {
     throw new Error("Method not implemented.");
   };
 }

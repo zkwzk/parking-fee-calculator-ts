@@ -1,5 +1,5 @@
 import { ChronoUnit } from "@js-joda/core";
-import { FitResult } from "../../types";
+import { CalculationResult, FitResult, PreviousDayContext } from "../../types";
 import { parseTimeString } from "../../utils";
 import { BaseFee } from "./BaseFee";
 
@@ -14,9 +14,10 @@ export class FixedFirstXMinutes extends BaseFee {
     x: number,
     feeFirstXMintues: number,
     y: number,
-    subsequenceChargePerYMinutes: number
+    subsequenceChargePerYMinutes: number,
+    isAcrossDay: boolean = false
   ) {
-    super(startTime, endTime);
+    super(startTime, endTime, isAcrossDay);
     this.startTime = parseTimeString(startTime);
     this.endTime = parseTimeString(endTime);
     this.x = x;
@@ -24,16 +25,16 @@ export class FixedFirstXMinutes extends BaseFee {
     this.y = y;
     this.subsequenceChargePerYMinutes = subsequenceChargePerYMinutes;
   }
-  calculateCost: (fit: FitResult) => number = (fit: FitResult): number => {
-    if (!fit.isFit) return 0;
+  calculateCost = (fit: FitResult, previousDayContext?: PreviousDayContext): CalculationResult => {
+    if (!fit.isFit) return {cost: 0};
     const startTimeAfterXMins = fit.startTime!.plusMinutes(this.x);
     // if fit.endTime plus x minutes, means the car is still in the first x minutes, then return feeFirstXMintues
     if (!fit.endTime!.isAfter(startTimeAfterXMins)) {
-      return this.feeFirstXMintues;
+      return {cost: this.feeFirstXMintues};
     }
 
-    if (this.startTime.equals(this.endTime)) { return this.feeFirstXMintues; }
-    
+    if (this.startTime.equals(this.endTime)) { return {cost: this.feeFirstXMintues}; }
+
     const timeDiff = startTimeAfterXMins.until(
       fit.endTime!,
       ChronoUnit.MINUTES
@@ -41,11 +42,11 @@ export class FixedFirstXMinutes extends BaseFee {
 
     const chargeNumberOfYMintues = Math.ceil(timeDiff / this.y);
 
-    return parseFloat(
+    return {cost: parseFloat(
       (
         this.feeFirstXMintues +
         chargeNumberOfYMintues * this.subsequenceChargePerYMinutes
       ).toFixed(2)
-    );
+    )};
   };
 }

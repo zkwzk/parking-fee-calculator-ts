@@ -23,8 +23,8 @@ describe("FixedFirstXMinutes", () => {
     };
     describe("calculateCost", () => {
         it("should return configXMinutesFee if its within the configed time period", () => {
-            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toBe(
-                configXMinutesFee
+            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toStrictEqual(
+                {cost: configXMinutesFee}
             );
         });
 
@@ -32,22 +32,22 @@ describe("FixedFirstXMinutes", () => {
             const endTime = LocalTime.of(13, 0);
             expect(
                 fixedFeePerXMinutes.calculateCost({ ...mockFitResult, endTime })
-            ).toBe(configXMinutesFee + configSubsequenceChargePerYMinutes * 4);
+            ).toStrictEqual({cost: configXMinutesFee + configSubsequenceChargePerYMinutes * 4});
         });
 
         it("should round to the next y minutes", () => {
             const endTime = LocalTime.of(13, 7);
             expect(
                 fixedFeePerXMinutes.calculateCost({ ...mockFitResult, endTime })
-            ).toBe(configXMinutesFee + configSubsequenceChargePerYMinutes * 5);
+            ).toStrictEqual({cost:configXMinutesFee + configSubsequenceChargePerYMinutes * 5});
         });
 
         it('should return 0 if not fit', () => {
-            expect(fixedFeePerXMinutes.calculateCost({ ...mockFitResult, isFit: false })).toBe(0);
+            expect(fixedFeePerXMinutes.calculateCost({ ...mockFitResult, isFit: false })).toStrictEqual({cost:0});
         })
 
         it('should return first x minutes fee if start time is the same with end time', () => {
-            expect(fixedFeePerXMinutes.calculateCost({ ...mockFitResult, endTime: LocalTime.of(10, 0) })).toBe(configXMinutesFee);
+            expect(fixedFeePerXMinutes.calculateCost({ ...mockFitResult, endTime: LocalTime.of(10, 0) })).toStrictEqual({cost:configXMinutesFee});
         });
     });
 });

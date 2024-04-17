@@ -15,7 +15,7 @@ describe('FixedFeePerXMinutes', () => {
                 isFit: true
             }
 
-            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toBe(2);
+            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toStrictEqual({cost: 2});
         });
 
         it('should round to the next x minutes', () => {
@@ -25,7 +25,7 @@ describe('FixedFeePerXMinutes', () => {
                 isFit: true
             }
 
-            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toBe(1);
+            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toStrictEqual({cost:1});
         });
 
         it('should return 0 if not fit', () => {
@@ -35,7 +35,7 @@ describe('FixedFeePerXMinutes', () => {
                 isFit: false
             }
 
-            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toBe(0);
+            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toStrictEqual({cost:0});
         });
 
         it('should return 1 unit of fee if start time is the same with end time', () => {
@@ -45,7 +45,7 @@ describe('FixedFeePerXMinutes', () => {
                 isFit: true
             }
 
-            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toBe(0.5);
+            expect(fixedFeePerXMinutes.calculateCost(mockFitResult)).toStrictEqual({cost: 0.5});
         });
     });
 });
