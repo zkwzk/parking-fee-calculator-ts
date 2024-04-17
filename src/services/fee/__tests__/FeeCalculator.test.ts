@@ -1,6 +1,6 @@
 import { LocalDate, LocalDateTime, LocalTime } from "@js-joda/core";
 import { FeeCalculator } from "../FeeCalculator";
-import { plazaSingapuraCarPark } from "../../../config";
+import { orchardCentralCarPark, plazaSingapuraCarPark, tscCarPark } from "../../../config";
 import { VEHICLE_TYPE } from "../../../types";
 
 describe("FeeCalculator", () => {
@@ -243,6 +243,23 @@ describe("FeeCalculator", () => {
     expect(feeCalculator.calculateParkingFee(startTime, endTime, plazaSingapuraCarPark)).toBe(expectedFee);
   });
 
+
+  it('plaza singapura should be the lowest', () => {
+    const startTime = "2021-01-01T00:00";
+    const endTime = "2021-01-01T23:59";
+    const expectedFee = 42.6;
+    expect(feeCalculator.calculateParkingFee(startTime, endTime, plazaSingapuraCarPark)).toBe(expectedFee);
+
+    const orchardCentralFee = feeCalculator.calculateParkingFee(startTime, endTime, orchardCentralCarPark);
+    expect(orchardCentralFee).toBeGreaterThan(expectedFee);
+    const tscCarParkFee = feeCalculator.calculateParkingFee(startTime, endTime, tscCarPark);
+    expect(tscCarParkFee).toBeGreaterThan(expectedFee);
+    expect(tscCarParkFee).toBeGreaterThan(orchardCentralFee);
+
+    console.log('plazaSingapura', expectedFee);
+    console.log('orchard central', orchardCentralFee);
+    console.log('tsc', tscCarParkFee);
+  })
   /*
   show instance where copilot generates the wrong implementation
   */
