@@ -52,10 +52,6 @@ export class FeeCalculator {
     const parseEndDateTime = LocalDateTime.parse(endDateTime);
     const result = [] as CalculateDaysResult[];
 
-    // startDate "2021-01-01T00:00:00"
-    // end "2021-01-01T02:00:00"
-    // current "2021-01-01T00:00:00"
-    // current + 1 day : "2021-01-02T00:00:00"
     let currentDate = parseStartDateTime.toLocalDate();
     let currentStartTime = parseStartDateTime.toLocalTime();
     let currentEndTime = parseEndDateTime.toLocalTime();

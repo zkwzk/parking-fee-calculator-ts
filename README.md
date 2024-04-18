@@ -73,3 +73,110 @@ npm t
 ```
 npm run apitest
 ```
+
+## How to use it
+You need to finish 3 tasks. if all 3 tasks finished, when you run the test in `feeCalculationService.test.ts`, the test will pass!
+
+### Task 1
+---
+can checkout the branch `step1` to start
+
+```bash
+git checkout step1
+```
+
+#### Requirement
+You need to implement the `calculateCost` method in `FixedFirstXMinutes`, it based on the rule `first X mintues charge a fixed amount, for the subsequence, each Y mintues will charge a fee`, for example:
+
+10:00 - 16:00: 
+
+First 2 hour at $5
+
+Every subsequent 15 minutes at $0.55
+
+X=120, Y=15
+
+**test case:**
+
+entryTime: 10:00, exitTime: 13:07
+
+10:00-12:00: $5
+
+12:01-13:07 (1*4+1)*0.55=$2.75
+
+in total: 5+2.75=$7.75
+
+#### Definiation of Done
+all test cases in `FixedFirstXMinutes.test.ts` are passed
+
+### Task 2
+---
+**you can continue your implementation without the checkout command if you finished `step1`, or start directly by checkout the branch `step2`**
+
+```bash
+git checkout step2
+````
+
+#### Requirement
+
+You need to implement the `isFit` method inside the `BaseFee` class, it's to comparing the input startTime and endTime, whether it fit the current rule, if yes, need to return the actual start time and actual end time,
+
+for example:
+rule configed: 10:00-13:00
+
+case 1:
+input param: startTime: 9:00, endTime: 9:59
+output: `{ isFit: false }`
+
+case 2:
+input param: startTime: 9:00, endTime: 11:01
+output: `{ isFit: true, startTime: 10:00, endTime: 11:01 }`
+
+#### Definition of Done
+All the test cases in `BaseFee.test.ts` are passed
+
+### Task 3
+---
+**you can continue your implementation without the checkout command if you finished `step2`, or start directly by checkout the branch `step3`**
+
+```bash
+git checkout step3
+```
+
+#### Requirement
+You need to finish the final logic, the `calculateParkingFee` method in `FeeCalculator.ts` to calculate the parking fee,
+1. need to check whether it's within grace peroid, if yes return 0
+2. need to check whether it's weekend, if yes need to use the weekend day rule instead of the week day, the `checkIsWeekend` method will return true if it's weekend
+3. split the start time and end time into days with `calculateDays` method
+4. iterate the rules with each days and sum the result
+
+**Test cases:**
+
+entryTime = "2021-01-01T10:00";
+
+exitTime = "2021-01-02T11:00";
+
+parking in plazaSingapura
+
+**day 1:**
+
+10:00-11:00: 1.95
+
+11:00-17:59: 7\*4*0.55 = 15.40
+
+18:00-23:59: 3.25
+
+**day 2:**
+
+00:00-02:59: 3\*4*0.55 = 6.60
+
+3:00-5:00: 3.25
+
+5:01-11:00: 6\*4*0.55 = 13.2
+
+total: 1.95 + 15.40 + 3.25 + 6.60 + 3.25 + 13.2 = 43.65
+
+#### Definition of Done
+All the test cases in `FeeCalculator.test.ts` are passed
+and the test cases in `feeCalculationService.test.ts` are all passed
+
