@@ -25,29 +25,8 @@ export class FixedFirstXMinutes extends BaseFee {
     this.subsequenceChargePerYMinutes = subsequenceChargePerYMinutes;
   }
   calculateCost: (fit: FitResult) => number = (fit: FitResult): number => {
-    if (!fit.isFit) return 0;
-    const startTimeAfterXMins = fit.startTime!.plusMinutes(this.x);
-    // if fit.endTime plus x minutes, means the car is still in the first x minutes, then return feeFirstXMintues
-    if (!fit.endTime!.isAfter(startTimeAfterXMins)) {
-      return this.feeFirstXMintues;
-    }
-
-    if (this.startTime.equals(this.endTime)) {
-      return this.feeFirstXMintues;
-    }
-
-    const timeDiff = startTimeAfterXMins.until(
-      fit.endTime!,
-      ChronoUnit.MINUTES
-    );
-
-    const chargeNumberOfYMintues = Math.ceil(timeDiff / this.y);
-
-    return parseFloat(
-      (
-        this.feeFirstXMintues +
-        chargeNumberOfYMintues * this.subsequenceChargePerYMinutes
-      ).toFixed(2)
-    );
+    // task #1
+    // TODO: implement the calculateCost method
+    return 0;
   };
 }
