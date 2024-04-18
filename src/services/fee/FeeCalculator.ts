@@ -92,40 +92,8 @@ export class FeeCalculator {
     vehicleType: VEHICLE_TYPE = VEHICLE_TYPE.CAR
   ): number => {
     let totalFee = 0;
-    if (
-      this.checkGracePeriod(startTime, endTime, carpark.gracePeriodInMinutes)
-    ) {
-      return 0;
-    }
-    const days = this.calculateDays(startTime, endTime);
-    console.log("days", days);
-    days.forEach((day) => {
-      if (day.isWeekendOrPH) {
-        const weekendPHFeeRules =
-          vehicleType === VEHICLE_TYPE.CAR
-            ? carpark.carFee.weekendPHFeeRules
-            : carpark.motocycleFee.feeRules;
-        weekendPHFeeRules.forEach((rule) => {
-          const isFitResult = rule.isFit(day.dayStartTime, day.dayEndTime);
-          if (isFitResult.isFit) {
-            const fee = rule.calculateCost(isFitResult);
-            console.log("rule", rule, "fee", fee);
-            totalFee += fee;
-          }
-        });
-      } else {
-        const weekdayFeeRules =
-          vehicleType === VEHICLE_TYPE.CAR
-            ? carpark.carFee.weekdayFeeRules
-            : carpark.motocycleFee.feeRules;
-        weekdayFeeRules.forEach((rule) => {
-          const isFitResult = rule.isFit(day.dayStartTime, day.dayEndTime);
-          if (isFitResult.isFit) {
-            totalFee += rule.calculateCost(isFitResult);
-          }
-        });
-      }
-    });
+    //#task 3
+    //TODO: Implement the logic to calculate the parking fee
     return parseFloat(totalFee.toFixed(2));
   };
 }
