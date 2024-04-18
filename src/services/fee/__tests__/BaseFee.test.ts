@@ -23,32 +23,8 @@ describe("BaseFee", () => {
       expect(fitResult.endTime).toBe(endTime);
     });
 
-    it("should return false if the given start and end times are outside the configured range", () => {
-      const startTime = LocalTime.parse("09:00");
-      const endTime = LocalTime.parse("09:59");
-      const fitResult = baseFee.isFit(startTime, endTime);
-      expect(fitResult.isFit).toBe(false);
-    });
-
-    it("should return configEndTime if stay longer than the configured end time", () => {
-      const startTime = LocalTime.parse("11:30");
-      const endTime = LocalTime.parse("13:00");
-      const fitResult = baseFee.isFit(startTime, endTime);
-      expect(fitResult.isFit).toBe(true);
-      expect(fitResult.startTime!.equals(startTime)).toBeTruthy;
-      expect(fitResult.endTime!.equals(configEndTime)).toBeTruthy;
-    });
-
-    it("should return configedStartTime if entry earlier than the configured start time", () => {
-      const startTime = LocalTime.parse("09:30");
-      const endTime = LocalTime.parse("10:30");
-      const fitResult = baseFee.isFit(startTime, endTime);
-      expect(fitResult.isFit).toBe(true);
-      expect(fitResult.startTime).toStrictEqual(
-        parseTimeString(configStartTime)
-      );
-      expect(fitResult.endTime).toBe(endTime);
-    });
+    // task #2
+    // TODO: implement more test cases for the isFit method
   });
 
   describe("calculateCost", () => {

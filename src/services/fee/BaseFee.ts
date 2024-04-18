@@ -11,19 +11,9 @@ export class BaseFee implements Fee {
   }
 
   isFit = (startTime: LocalTime, endTime: LocalTime): FitResult => {
-    if (
-      (startTime.isBefore(this.startTime) &&
-        endTime.isBefore(this.startTime)) ||
-      (endTime.isAfter(this.endTime) && startTime.isAfter(this.endTime))
-    ) {
-      return { isFit: false };
-    }
-
-    return {
-      isFit: true,
-      startTime: startTime.isAfter(this.startTime) ? startTime : this.startTime,
-      endTime: endTime.isBefore(this.endTime) ? endTime : this.endTime,
-    };
+    // task #2
+    // TODO: Implement the isFit method
+    return { isFit: false };
   };
 
   calculateCost = (fit: FitResult): number => {
