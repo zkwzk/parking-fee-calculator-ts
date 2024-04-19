@@ -1,6 +1,6 @@
 import { LocalDate, LocalDateTime, LocalTime } from "@js-joda/core";
-import { feeCalculationService } from "../feeCalculationService";
 import { VEHICLE_TYPE } from "../../types";
+import { feeCalculationService } from "../FeeCalculationService";
 
 describe("feeCalculationService", () => {
   // const startDateTime = LocalDateTime.of(

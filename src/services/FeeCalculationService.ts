@@ -16,7 +16,7 @@ class FeeCalculationService {
     startDateTime: string,
     endDateTime: string,
     vehicle: VEHICLE_TYPE
-  ): Map<string, number> {
+  ): {[key: string]: number} {
     const carparkFeeMap = new Map<string, number>();
     carParkList.forEach((carpark) => {
       const carparkName = carpark.name;
@@ -28,7 +28,8 @@ class FeeCalculationService {
       );
       carparkFeeMap.set(carparkName, fee);
     });
-    return carparkFeeMap;
+
+    return Object.fromEntries(carparkFeeMap.entries());carparkFeeMap;
   }
 }
 
