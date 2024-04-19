@@ -5,7 +5,15 @@ These are the carparks that will be considered in this application:
 
 ![alt text](carpark_data.png)
 
-This is a Node.js project built with TypeScript and Express.
+For each of the car park, it has different parking rules, the rules for weekday and weekend are also different, in general there are three kinds of parking rule, 
+
+**Fixed per entry**: Per Entry charge - $4.36
+
+**Fixed first X minutes, then subsequent Y mins charge**: 
+First hour(X=60) at $1.95
+Every subsequent 15 minutes(Y=15) at $0.55
+
+**Fixed per X minutes**: $0.55 every 15 minutes(X=15)
 
 ## Project Structure
 
@@ -15,7 +23,7 @@ my-nodejs-app
 ├── src
 │   ├── app.ts
 │   ├── controllers
-│   │   └── HelloWorldController.ts
+│   │   └── FeeCalculationController.ts
 │   ├── routes
 │   │   └── index.ts
 │   ├── services
@@ -36,8 +44,8 @@ my-nodejs-app
 ## File Descriptions
 
 - `src/app.ts`: This file is the entry point of the application. It creates an instance of the express app, sets up middleware and routes, and starts the server.
-- `src/controllers/HelloWorldController.ts`: This file exports a class `HelloWorldController` which has a method `getHelloWorld` that handles the `/hello` route of the application and returns "Hello, World!".
-- `src/routes/index.ts`: This file exports a function `setRoutes` which sets up the routes for the application. It uses the `HelloWorldController` to handle the `/hello` route.
+- `src/controllers/FeeCalculationController.ts`: This file exports a class `FeeCalculationController` which has a method `getParkingFee` that handles the `/calculateFee` route of the application and returns the fee.
+- `src/routes/index.ts`: This file exports a function `setRoutes` which sets up the routes for the application. It uses the `FeeCalculationController` to handle the `/calculateFee` route.
 - `src/types/index.ts`: This file exports the types and interfaces used in the calculation, such as `CarPark` and `CarFee`.
 - `src/services/fee/BaseFee.ts`: This file implements the Fee interface and implements the `isFit` method, which returns the time period that falls within the ruleset, or a false result if the inputted time period does not fall within the ruleset at all.
 - `src/services/fee/FeeCalculator.ts`: This file implements the `calculateParkingFee` method and its helper methods.
@@ -60,7 +68,7 @@ npm install
 npm run dev
 ```
 
-it will run at localhost:3000, and has a endpoint `/hello`
+it will run at localhost:3000, and has a endpoint `/calculateFee`
 
 ## run test
 
@@ -162,7 +170,7 @@ parking in plazaSingapura
 
 10:00-11:00: 1.95
 
-11:00-17:59: 7\*4*0.55 = 15.40
+11:01-17:59: 7\*4*0.55 = 15.40
 
 18:00-23:59: 3.25
 
