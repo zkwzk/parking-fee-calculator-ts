@@ -19,12 +19,6 @@ export type FitResult = {
   endTime?: LocalTime;
 };
 
-export interface Fee {
-  startTime: LocalTime;
-  endTime: LocalTime;
-  isFit: (startTime: LocalTime, endTime: LocalTime) => FitResult;
-  calculateCost: (fit: FitResult) => number;
-}
 
 export type CarFee = {
   weekdayFeeRules: BaseFee[];
