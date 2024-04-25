@@ -21,10 +21,7 @@ describe("feeCalculationService", () => {
     expected fee for takashimaya: ($1.85*4) + ($1.31*6) + ($1.85*4) = $7.4 + $7.86 + $7.4 + 4.36 = $27.02
   */
   it("should return map of carpark name to parking fee given intended parking start and end datetime and vehicle type", () => {
-    const expectedCarparkMapOutput = new Map<string, number>();
-    expectedCarparkMapOutput.set("Plaza Singapura", 16.2);
-    expectedCarparkMapOutput.set("Orchard Central", 20.42);
-    expectedCarparkMapOutput.set("Takashimaya Shopping Centre", 27.02);
+    const expectedCarparkMapOutput = { "Plaza Singapura": 16.2, "Orchard Central": 20.42, "Takashimaya Shopping Centre": 27.02 };
     expect(
       feeCalculationService.getParkingFeeByCarpark(
         startDateTime,
