@@ -1,8 +1,8 @@
 import { LocalTime } from "@js-joda/core";
-import { Fee, FitResult } from "../../types";
+import { FitResult } from "../../types";
 import { parseTimeString } from "../../utils";
 
-export class BaseFee implements Fee {
+export class BaseFee {
   startTime: LocalTime;
   endTime: LocalTime;
   constructor(startTime: string, endTime: string) {

@@ -56,6 +56,8 @@ my-nodejs-app
 - `package.json`: This file is the configuration file for npm. It lists the dependencies and scripts for the project.
 - `README.md`: This file contains the documentation for the project.
 
+## Class Diagram
+![class diagram](./class_diagram.png)
 ## install
 
 ```
