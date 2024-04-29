@@ -1,4 +1,3 @@
-import { LocalDateTime } from "@js-joda/core";
 import { FeeCalculator } from "./fee/FeeCalculator";
 import { CarPark, VEHICLE_TYPE } from "../types";
 import { carParkList } from "../config";
@@ -29,7 +28,7 @@ class FeeCalculationService {
       carparkFeeMap.set(carparkName, fee);
     });
 
-    return Object.fromEntries(carparkFeeMap.entries());carparkFeeMap;
+    return Object.fromEntries(carparkFeeMap.entries());
   }
 }
 
