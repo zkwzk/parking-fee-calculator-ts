@@ -58,6 +58,9 @@ my-nodejs-app
 
 ## Class Diagram
 ![class diagram](./class_diagram.png)
+
+## Time Sequence Diagram
+![time sequence diagram](./calculate_parking_fee.png)
 ## install
 
 ```
